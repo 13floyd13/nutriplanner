@@ -33,7 +33,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: jacoco-report
-        path: target/site/jacoco/index.html  # Remplacez par le chemin de votre rapport Jacoco
+        path: /target/site/jacoco/index.html  # Remplacez par le chemin de votre rapport Jacoco
 
       
 #   sonar:
