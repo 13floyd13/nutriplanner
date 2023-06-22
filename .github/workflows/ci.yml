@@ -74,7 +74,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: jacoco-report
-        path: target/site/jacoco/
+        path: target/site/jacoco/index.html
 
 #     - name: Commit and push the coverage badges and summary file
 #       if: ${{ github.event_name != 'pull_request' }}
