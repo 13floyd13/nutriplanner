@@ -67,7 +67,7 @@ jobs:
 #         echo "coverage = ${{ steps.jacoco.outputs.coverage }}"
 #         echo "branches = ${{ steps.jacoco.outputs.branches }}"
     - name: Display structure of target/site/
-      run: ls -R target/site/
+      run: ls -R target/
 
 
     - name: Upload JaCoCo coverage report as a workflow artifact
