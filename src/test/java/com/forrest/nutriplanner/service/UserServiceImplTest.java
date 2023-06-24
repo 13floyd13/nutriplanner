@@ -27,8 +27,8 @@ class UserServiceImplTest {
     @MockBean
     private UserRepository userRepository;
 
-    User user;
-    User user2;
+    private User user;
+    private User user2;
 
     @BeforeEach
     void setUp() {
@@ -67,9 +67,7 @@ class UserServiceImplTest {
         Long id = 1L;
         Mockito.when(userRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> {
-            userService.getUserById(id);
-        });
+        assertThrows(NoSuchElementException.class, () -> userService.getUserById(id));
     }
 
     @Test

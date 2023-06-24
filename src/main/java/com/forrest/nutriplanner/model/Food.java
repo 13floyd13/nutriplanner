@@ -1,12 +1,11 @@
 package com.forrest.nutriplanner.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -18,6 +17,10 @@ public class Food {
     @Id
     @GeneratedValue
     private Long idFood;
+
+    @OneToMany(mappedBy = "food")
+    private Set<MealFood> mealFood;
+
     private String productName;
     private String quantity;
     private String brand;
