@@ -1,0 +1,100 @@
+@startuml NutriPlanner
+
+title NutriPlanner Class Diagram
+
+class User {
+  -Long id
+  -String login
+  -String password
+}
+
+class Food {
+  -Long id
+  -String productName
+  -String quantity
+  -String brands
+  -String IngredientsText
+  -Integer energy_100g
+  -Integer protein_100g
+  -Integer fat_100g
+  -Integer fiber_100g
+  -Integer carbohydrates_100g
+  -Integer sugar_100g
+  -Integer salt_100g
+  -Integer vitamin-a_100g
+  -Integer vitamin-d_100g
+  -Integer vitamin-e_100g
+  -Integer vitamin-k_100g
+  -Integer vitamin-c_100g
+  -Integer vitamin-b1_100g
+  -Integer vitamin-b2_100g
+  -Integer vitamin-pp_100g
+  -Integer vitamin-b6_100g
+  -Integer vitamin-b9_100g
+  -Integer vitamin-b12_100g
+}
+
+class MealFood {
+  -Long id
+  -Double quantity
+  *Food food
+  *Meal meal
+}
+
+class Meal {
+  -Long id
+  -String description
+  -Integer mealEnergy
+  -Integer mealProtein
+  -Integer mealFat
+  -Integer mealFiber
+  -Integer mealCarbohydrates
+  -Integer mealSugar
+  -Integer mealSalt
+  -Integer mealVitamin-a_100g
+  -Integer mealVitamin-d_100g
+  -Integer mealVitamin-e_100g
+  -Integer mealVitamin-k_100g
+  -Integer mealVitamin-c_100g
+  -Integer mealVitamin-b1_100g
+  -Integer mealVitamin-b2_100g
+  -Integer mealVitamin-pp_100g
+  -Integer mealVitamin-b6_100g
+  -Integer mealVitamin-b9_100g
+  -Integer mealVitamin-b12_100g
+  *MealFood[] mealFoods
+  *MealPlan[] mealPlans
+}
+
+class MealPlan {
+  -Long id
+  -String description
+  -Integer totalEnergy
+  -Integer totalProtein
+  -Integer totalFat
+  -Integer totalFiber
+  -Integer totalCarbohydrates
+  -Integer totalSugar
+  -Integer totalSalt
+  -Integer totalVitamin-a_100g
+  -Integer totalVitamin-d_100g
+  -Integer totalVitamin-e_100g
+  -Integer totalVitamin-k_100g
+  -Integer totalVitamin-c_100g
+  -Integer totalVitamin-b1_100g
+  -Integer totalVitamin-b2_100g
+  -Integer totalVitamin-pp_100g
+  -Integer totalVitamin-b6_100g
+  -Integer totalVitamin-b9_100g
+  -Integer totalVitamin-b12_100g
+  *Meal[] meals
+}
+
+Food "1" <-- "many" MealFood : contains
+Meal "1" <-- "many" MealFood : contains
+MealFood "many" --> "1" Food : is part of
+MealFood "many" --> "1" Meal : is part of
+Meal "many" --> "many" MealPlan : is part of
+MealPlan "many" --> "many" Meal : contains
+
+@enduml
