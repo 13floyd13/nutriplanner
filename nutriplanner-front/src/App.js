@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import HomePage from './components/HomePage';
-import UserPage from './components/UserPage';
-import FoodPage from './components/FoodPage';
+import HomePage from './pages/HomePage';
+import UserPage from './pages/UserPage';
+import FoodPage from './pages/FoodPage';
 // Importez les autres pages ici
 
 const App = () => {
