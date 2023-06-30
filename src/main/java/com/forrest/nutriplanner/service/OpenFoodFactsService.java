@@ -7,8 +7,8 @@ import com.forrest.nutriplanner.exceptions.DeserializationException;
 import com.forrest.nutriplanner.exceptions.HttpRequestException;
 import com.forrest.nutriplanner.exceptions.HttpResponseException;
 import com.forrest.nutriplanner.exceptions.InvalidBarcodeException;
-import com.forrest.nutriplanner.model.dto.ProductDTO;
 import com.forrest.nutriplanner.model.dto.ResponseDTO;
+import com.forrest.nutriplanner.model.entities.Food;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -31,7 +31,7 @@ public class OpenFoodFactsService {
 
     }
 
-    public ProductDTO getProductByBarCode(String barcode) throws InvalidBarcodeException, HttpRequestException, HttpResponseException, DeserializationException {
+    public Food getFoodByBarCode(String barcode) throws InvalidBarcodeException, HttpRequestException, HttpResponseException, DeserializationException {
         final String function = "getProductByBarCode";
         HttpRequest request;
         try {
@@ -64,8 +64,34 @@ public class OpenFoodFactsService {
         } catch (JsonProcessingException e) {
             throw new DeserializationException("Error while deserialize in " + function, e);
         }
-        return responseDTO.getProduct();
 
+        return mappingResponseToFood(responseDTO);
+
+    }
+
+    private Food mappingResponseToFood(ResponseDTO responseDTO) {
+        Food food = new Food();
+        food.setIdOpenFoodFact(responseDTO.getProduct().getId());
+        food.setCode(responseDTO.getCode());
+        food.setName(responseDTO.getProduct().getName());
+        food.setProductName(responseDTO.getProduct().getProductName());
+        food.setQuantity(responseDTO.getProduct().getQuantity());
+        food.setBrand(responseDTO.getProduct().getBrands());
+        food.setIngredients(responseDTO.getProduct().getIngredients());
+        food.setEnergy100G(responseDTO.getProduct().getNutriments().getEnergyKcal100G());
+        food.setFat100G(responseDTO.getProduct().getNutriments().getFat100G());
+        food.setSaturatedFat100G(responseDTO.getProduct().getNutriments().getSaturatedFat100G());
+        food.setTransFat100G(responseDTO.getProduct().getNutriments().getTransFat100G());
+        food.setFiber100G(responseDTO.getProduct().getNutriments().getFiber100G());
+        food.setCarbohydrates100G(responseDTO.getProduct().getNutriments().getCarbohydrates100G());
+        food.setSugar100G(responseDTO.getProduct().getNutriments().getSugars100G());
+        food.setSalt100G(responseDTO.getProduct().getNutriments().getSalt100G());
+        food.setSodium100G(responseDTO.getProduct().getNutriments().getSodium100G());
+        food.setCalcium100G(responseDTO.getProduct().getNutriments().getCalcium100G());
+        food.setCholesterol100G(responseDTO.getProduct().getNutriments().getCholesterol100G());
+        food.setIron100g(responseDTO.getProduct().getNutriments().getIron100G());
+        food.setVitaminA(responseDTO.getProduct().getNutriments().getVitaminA100G());
+        return food;
     }
 
 }

@@ -4,7 +4,7 @@ import com.forrest.nutriplanner.exceptions.DeserializationException;
 import com.forrest.nutriplanner.exceptions.HttpRequestException;
 import com.forrest.nutriplanner.exceptions.HttpResponseException;
 import com.forrest.nutriplanner.exceptions.InvalidBarcodeException;
-import com.forrest.nutriplanner.model.dto.ProductDTO;
+import com.forrest.nutriplanner.model.entities.Food;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,17 +20,18 @@ class OpenFoodFactsServiceIntegrationTest {
 
     private static final Logger logger = LoggerFactory.getLogger(OpenFoodFactsServiceIntegrationTest.class);
     @Test
-    void getProductByBarCodeTest() {
+    void getFoodByBarCodeTest() {
         String barcode = "3302740059193";
 
-        ProductDTO product = null;
+        Food food = new Food();
         try {
-            product = openFoodFactsService.getProductByBarCode(barcode);
+            food = openFoodFactsService.getFoodByBarCode(barcode);
         } catch (InvalidBarcodeException | HttpRequestException | HttpResponseException | DeserializationException e) {
             fail("Exception", e);
         }
-        assertNotNull(product);
-        logger.info(product.toString());
+        assertNotNull(food);
+        logger.info(food.toString());
+        logger.info("Vitamin-A : " + food.getVitaminA());
 
     }
 }

@@ -21,28 +21,37 @@ public class Food {
     @OneToMany(mappedBy = "food")
     private Set<MealFood> mealFood;
 
+    private String idOpenFoodFact;
+    private String code;
+    private String name;
     private String productName;
     private String quantity;
     private String brand;
-    private String ingredientText;
-    private Integer energy100g;
-    private Integer protein100g;
-    private Integer fat100g;
-    private Integer fiber100g;
-    private Integer carbohydrates100g;
-    private Integer sugar100g;
-    private Integer salt100g;
-    private Integer vitaminA;
-    private Integer vitaminD;
-    private Integer vitaminE;
-    private Integer vitaminK;
-    private Integer vitaminC;
-    private Integer vitaminB;
-    private Integer vitaminB2;
-    private Integer vitaminPP;
-    private Integer vitaminB6;
-    private Integer vitaminB9;
-    private Integer vitaminB12;
-
+    @Column(length = 1000)
+    private String ingredients;
+    private Integer energy100G;
+    private Float protein100G;
+    private Float fat100G;
+    private Float saturatedFat100G;
+    private Float transFat100G;
+    private Float fiber100G;
+    private Float carbohydrates100G;
+    private Float sugar100G;
+    private Float salt100G;
+    private Float sodium100G;
+    private Float calcium100G;
+    private Float cholesterol100G;
+    private Float iron100g;
+    private Float vitaminA;
+    private Float vitaminD;
+    private Float vitaminE;
+    private Float vitaminK;
+    private Float vitaminC;
+    private Float vitaminB;
+    private Float vitaminB2;
+    private Float vitaminPP;
+    private Float vitaminB6;
+    private Float vitaminB9;
+    private Float vitaminB12;
 
 }
