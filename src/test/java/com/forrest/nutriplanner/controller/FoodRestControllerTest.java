@@ -1,7 +1,12 @@
 package com.forrest.nutriplanner.controller;
 
+import com.forrest.nutriplanner.exceptions.DeserializationException;
+import com.forrest.nutriplanner.exceptions.HttpRequestException;
+import com.forrest.nutriplanner.exceptions.HttpResponseException;
+import com.forrest.nutriplanner.exceptions.InvalidBarcodeException;
 import com.forrest.nutriplanner.model.entities.Food;
 import com.forrest.nutriplanner.service.FoodServiceImpl;
+import com.forrest.nutriplanner.service.OpenFoodFactsService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +32,9 @@ class FoodRestControllerTest {
     
     @MockBean
     private FoodServiceImpl foodService;
+
+    @MockBean
+    private OpenFoodFactsService foodFactsService;
     
     private Food food;
     private Food food2;
@@ -163,6 +171,61 @@ class FoodRestControllerTest {
     }
 
     @Test
+    void searchFoodByBarcode() {
+        String barcode = "1234";
+        try {
+            Mockito.when(foodFactsService.getFoodByBarCode(barcode)).thenReturn(food);
+        } catch (InvalidBarcodeException | HttpRequestException | HttpResponseException | DeserializationException e) {
+            fail();
+        }
+
+        ResponseEntity<Food> response = foodRestController.searchFoodByBarcode(barcode);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(food, response.getBody());
+    }
+
+    @Test
+    void searchFoodByBarcodeBadRequest() throws InvalidBarcodeException, HttpRequestException, HttpResponseException, DeserializationException {
+        String barcode = "1234";
+
+        Mockito.when(foodFactsService.getFoodByBarCode(barcode)).thenThrow(new InvalidBarcodeException("message", new Throwable()));
+
+        ResponseEntity<Food> response = foodRestController.searchFoodByBarcode(barcode);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    void searchFoodByBarcodeInternalServerErrorRequestException() throws InvalidBarcodeException, HttpRequestException, HttpResponseException, DeserializationException {
+        String barcode = "1234";
+
+        Mockito.when(foodFactsService.getFoodByBarCode(barcode)).thenThrow(new HttpRequestException("message", new Throwable()));
+
+        ResponseEntity<Food> response = foodRestController.searchFoodByBarcode(barcode);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    @Test
+    void searchFoodByBarcodeInternalServerErrorResponseException() throws InvalidBarcodeException, HttpRequestException, HttpResponseException, DeserializationException {
+        String barcode = "1234";
+
+        Mockito.when(foodFactsService.getFoodByBarCode(barcode)).thenThrow(new HttpResponseException("message"));
+
+        ResponseEntity<Food> response = foodRestController.searchFoodByBarcode(barcode);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    @Test
+    void searchFoodByBarcodeInternalServerErrorDeserializationException() throws InvalidBarcodeException, HttpRequestException, HttpResponseException, DeserializationException {
+        String barcode = "1234";
+
+        Mockito.when(foodFactsService.getFoodByBarCode(barcode)).thenThrow(new DeserializationException("message", new Throwable()));
+
+        ResponseEntity<Food> response = foodRestController.searchFoodByBarcode(barcode);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+
+    @Test
     void deleteFoodById() {
         Long id = 1L;
         Mockito.doNothing().when(foodService).deleteFoodById(id);
@@ -197,4 +260,6 @@ class FoodRestControllerTest {
         ResponseEntity<Void> response = foodRestController.deleteFoodById(id);
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
+
+
 }

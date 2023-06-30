@@ -1,7 +1,12 @@
 package com.forrest.nutriplanner.controller;
 
+import com.forrest.nutriplanner.exceptions.DeserializationException;
+import com.forrest.nutriplanner.exceptions.HttpRequestException;
+import com.forrest.nutriplanner.exceptions.HttpResponseException;
+import com.forrest.nutriplanner.exceptions.InvalidBarcodeException;
 import com.forrest.nutriplanner.model.entities.Food;
 import com.forrest.nutriplanner.service.FoodServiceImpl;
+import com.forrest.nutriplanner.service.OpenFoodFactsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -24,6 +29,9 @@ public class FoodRestController {
     
     @Autowired
     FoodServiceImpl foodService;
+
+    @Autowired
+    OpenFoodFactsService foodFactsService;
 
     @PostMapping("/create")
     @Operation(summary = "Create a new food",
@@ -62,7 +70,7 @@ public class FoodRestController {
             ))
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "201", description = "Resource updated",
+                    @ApiResponse(responseCode = "200", description = "Resource updated",
                             content = {@Content(schema = @Schema(implementation = Food.class))}),
                     @ApiResponse(responseCode = "400", description = "Invalid input",
                             content = @Content),
@@ -90,7 +98,7 @@ public class FoodRestController {
     @Operation(summary = "Get Food by id")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "201", description = "OK",
+                    @ApiResponse(responseCode = "200", description = "OK",
                             content = {@Content(schema = @Schema(implementation = Food.class))}),
                     @ApiResponse(responseCode = "400", description = "Invalid input",
                             content = @Content),
@@ -118,7 +126,7 @@ public class FoodRestController {
     @Operation(summary = "Get all clients")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "201", description = "OK",
+                    @ApiResponse(responseCode = "200", description = "OK",
                             content = {@Content(schema = @Schema(implementation = Food.class))}),
                     @ApiResponse(responseCode = "400", description = "Invalid input",
                             content = @Content),
@@ -133,6 +141,30 @@ public class FoodRestController {
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/get/barcode/{barcode}")
+    @Operation(summary = "Search Food by Barcode")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "OK",
+                            content = {@Content(schema = @Schema(implementation = Food.class))}),
+                    @ApiResponse(responseCode = "400", description = "Invalid input",
+                            content = @Content),
+                    @ApiResponse(responseCode = "500", description = "Internal server error",
+                            content = @Content),
+            }
+    )
+    @Parameter(description = "The barcode", name = "barcode", schema = @Schema(type = "String"), example = "3302740059193")
+    public ResponseEntity<Food> searchFoodByBarcode(@PathVariable String barcode) {
+        try {
+            Food food = foodFactsService.getFoodByBarCode(barcode);
+            return ResponseEntity.status(HttpStatus.OK).body(food);
+        } catch (InvalidBarcodeException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (HttpRequestException | HttpResponseException | DeserializationException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -166,4 +198,6 @@ public class FoodRestController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 }
