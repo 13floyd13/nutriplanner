@@ -1,6 +1,6 @@
 package com.forrest.nutriplanner.controller;
 
-import com.forrest.nutriplanner.model.User;
+import com.forrest.nutriplanner.model.entities.User;
 import com.forrest.nutriplanner.service.UserServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

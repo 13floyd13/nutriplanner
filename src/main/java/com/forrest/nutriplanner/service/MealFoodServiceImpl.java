@@ -1,6 +1,6 @@
 package com.forrest.nutriplanner.service;
 
-import com.forrest.nutriplanner.model.MealFood;
+import com.forrest.nutriplanner.model.entities.MealFood;
 import com.forrest.nutriplanner.repository.MealFoodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

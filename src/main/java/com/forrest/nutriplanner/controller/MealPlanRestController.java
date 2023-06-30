@@ -1,6 +1,6 @@
 package com.forrest.nutriplanner.controller;
 
-import com.forrest.nutriplanner.model.MealPlan;
+import com.forrest.nutriplanner.model.entities.MealPlan;
 import com.forrest.nutriplanner.service.MealPlanServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

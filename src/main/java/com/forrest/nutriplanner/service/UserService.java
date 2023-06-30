@@ -1,6 +1,6 @@
 package com.forrest.nutriplanner.service;
 
-import com.forrest.nutriplanner.model.User;
+import com.forrest.nutriplanner.model.entities.User;
 
 import java.util.List;
 
