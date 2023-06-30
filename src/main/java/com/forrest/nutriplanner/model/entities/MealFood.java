@@ -1,4 +1,4 @@
-package com.forrest.nutriplanner.model;
+package com.forrest.nutriplanner.model.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
